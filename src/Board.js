@@ -137,6 +137,7 @@
     hasAnyColConflicts: function() {
       var board = this.attributes
       for(var key in board){
+
         if(this.hasColConflictAt(Number(key))){
           return true
         }
@@ -151,6 +152,44 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+      var count = 0;
+      var board = this.rows();
+
+      console.log('start: ', majorDiagonalColumnIndexAtFirstRow);
+
+      for (var i = 0; i < board.length; i++) {
+        if (this._isInBounds(0, majorDiagonalColumnIndexAtFirstRow)) {
+          if (majorDiagonalColumnIndexAtFirstRow < 0) {
+            majorDiagonalColumnIndexAtFirstRow + 1;
+            this.rowIndex + 1;
+          } else {
+            majorDiagonalColumnIndexAtFirstRow + 1;
+            this.rowIndex + 1;
+          }
+        }
+       // if (board[i][0])
+      }
+
+      // _isInBounds: function(rowIndex, colIndex)
+      // _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex)
+ 
+      // iterate through board = this.attributes
+      // run isInBounds
+        // if colIndex < 0
+          // colIdx + 1
+          // rowIdx + 1
+        // else 
+          // colIdx + 1
+          // rowIdx + 1
+        // if current index = 1
+          // count++
+        
+
+
+      if (count > 1) {
+        return true;
+      }
+
       return false; // fixme
     },
 
