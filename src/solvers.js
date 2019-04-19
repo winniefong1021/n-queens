@@ -17,8 +17,10 @@
 
 window.findNRooksSolution = function(n) {
   var solution = []; //fixme
-  var board = new Board({n:n});
-  console.log(board.rows());
+  var board = new Board({n: n});
+
+  console.log(board.get('n'))
+  
   // instantiate a new board with n passed in
 
   // base case: if row ===  n - 1
