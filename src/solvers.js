@@ -13,82 +13,77 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
+window.findSolution = function (row, n, board, validator, callback) {
+  if (row === n) {
+    return callback();
+  }
 
+  for (var i = 0; i < n; i++) {
+    board.togglePiece(row, i);
 
-window.findNRooksSolution = function(n) {
-  var solution = []; //fixme
-  var board = new Board({n: n});
+    if (!board[validator]()) {
+      var result = findSolution(row + 1, n, board, validator, callback);
+      if (result) {
+        return result;
+      }
+    }
 
-  console.log(board.get('n'))
-  
-  // instantiate a new board with n passed in
+    board.togglePiece(row, i);
+  }
+};
 
-  // base case: if row ===  n - 1
-  // return solution.push(board.rows())
+window.findNRooksSolution = function (n) {
+  var board = new Board({ n: n });
 
-  // iterate through board.rows
-    // togglePiece(rowIdx, colIdx) start (0, 0)
-    // check if rooksconflicts is false
-    // make recursive function (row + 1)
-    // togglePiece(rowIdx, colIdx++)
-  // call recursive function on (0,0)
+  var solution = findSolution(0, n, board, 'hasAnyRooksConflicts', function () {
+    return _.map(board.rows(), function (row) {
+      return row.slice();
+    });
+  });
 
-  // create rowCount = 0;
-  // create rowIdx = 0;
-  // create colIdx = 0;
-  // while solution.length < n
-    // create innerArr = [] to make rows
-    // togglePiece at (rowIdx,colIdx)
-    // check if hasAnyRooksConflicts
-      // if false then create while loop for innerArr.length < n to get [1,0,0,0] pushed to solution
-    // togglePiece at (rowIdx+1, colIdx+1)
-      // check for rooksconflict
-        // repeat 
-    // rowCount++
-
-
-
-  
-
-  // console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution; 
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+window.countNRooksSolutions = function (n) {
+  var board = new Board({ n: n });
 
-  // helper funcs:
-    // rowConflict
-    // colConflict
-    // hasAnyRooksConflicts: uses hasAnyRowConflict and hasAnyColConflict
-    // togglePiece(rowIndex, colIndex)
+  var solutionCount = 0;
 
-  // create inner arr for each row to push into solution
-
-  // iterate through board size = n 
-    // innerArr = []
-    // togglePiece at 0,0 (row, col)
-      // invoke hasAnyRooksConflicts()
-        // create 1st row to have n.length with 0 after togglePiece
-        // if false then togglePiece(rowIdx++, colIdx++)
-
+  findSolution(0, n, board, 'hasAnyRooksConflicts', function () {
+    solutionCount++;
+  });
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+window.findNQueensSolution = function (n) {
+  var board = new Board({ n: n });
+
+  var solution = findSolution(0, n, board, 'hasAnyQueensConflicts', function () {
+    return _.map(board.rows(), function (row) {
+      return row.slice();
+    });
+  });
+
+  solution = solution || board.rows();
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
-window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+window.countNQueensSolutions = function (n) {
+  var board = new Board({ n: n });
+
+  var solutionCount = 0;
+
+  findSolution(0, n, board, 'hasAnyQueensConflicts', function () {
+    solutionCount++;
+  });
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
